@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %} {{ user.username }} {% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card">
+				{% if user.photo %}
+					<img src="{{ user.photo.url }}" class="card-img-top" alt="">
+				{% else %}
+					<img src="https://sun9-27.userapi.com/c844416/v844416485/90124/y_SgA6H39ko.jpg" class="card-img-top" alt="">
+				{% endif %}
+				<div class="card-body">
+					<h4 class="card-title">{{ user.username }}</h4>
+					<h5 class="card-text">{{ user.first_name }} {{ user.last_name }}</h5>
+					<p class="card-text">{{ user.about }}</p>
+					{% if request.user.pk == user.pk %}
+					<a href="{% url 'edit_profile' user.pk %}" class="btn btn-secondary">Редактировать профиль</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-8">
+			{% if user.pk == request.user.pk %}
+				<div class="container">
+					<a href="{% url 'add_news' request.user.pk %}" class="btn btn-success">Добавить новость</a>
+					<p></p>
+				</div>
+
+			{% endif %}
+			{% if news %}
+
+
+				{% for item in news %}
+					<div class="container">
+						<div class="card">
+							<h5 class="card-header">Автор: <a href="{% url 'profile' item.user.pk %}" style="text-decoration:none; color:black;">{{ item.user }}</a></h5>
+							<div class="card-body">
+								<h5 class="card-title">{{ item.title }}</h5>
+								<p class="card-text">{{ item.annotation }}</p>
+								<a href="{% url 'news' item.pk %}" class="btn btn-primary">Перейти к новости</a>
+								{% if user.pk == request.user.pk %}
+									<a href="{% url 'edit_news' item.pk request.user.pk %}" class="btn btn-warning">Изменить</a>
+									<a href="{% url 'delete_news' item.pk request.user.pk  %}" class="btn btn-danger">Удалить</a>
+								{% endif %}
+							</div>
+							<div class="card-footer text-muted">
+								{{ item.created_at|date:"d E Y G:i" }}
+							</div>
+						</div>
+					</div>
+					<p></p>
+				{% endfor %}
+			{% else %}
+				<p>У этого автора еще нет статей(</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

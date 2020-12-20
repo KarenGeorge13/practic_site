@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Добавление новости {% endblock %}
+{% block content %}
+
+<div class="container" style="width: 50rem;">
+	<form action="{% url 'add_news' request.user.pk %}" method="post">
+		<div class="card" style="width: 45rem;">
+			<div class="card-body">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button type="submit" class="btn btn-success">Добавить новость</button>
+				<a href="{% url 'profile' request.user.pk %}" class="btn btn-secondary">Отмена</a>
+			</div>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

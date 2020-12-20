@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %} Вход {% endblock %}
+{% block content %}
+<div class="container" style="width: 45rem;">
+	<form action="{% url 'authen' %}" method="post">
+		<div class="card" style="width: 45rem;">
+			<div class="card-body">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button type="submit" class="btn btn-primary">Вход</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
